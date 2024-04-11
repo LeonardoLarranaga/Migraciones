@@ -10,7 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      models.Activo.belongsToMany(models.Responsable, {
+        through: models.ActivoResponsables
+      })
     }
   }
   Activo.init({
