@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   ActivoResponsables.init({
-    numSerieActivo: DataTypes.INTEGER,
-    numeroEmpleadoResponsable: DataTypes.INTEGER
+    activoId: DataTypes.INTEGER,
+    responsableId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'ActivoResponsables',
