@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       models.Activo.belongsToMany(models.Responsable, {
         through: models.ActivoResponsables
       })
+
+      models.Activo.belongsTo(models.Ubicacion, {
+        foreignKey: "ubicacionId",
+      })
     }
   }
   Activo.init({
@@ -31,6 +35,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     imagen: {
       type: DataTypes.BLOB,
+    },
+    ubicacionId: {
+      type: DataTypes.INTEGER,
     }
   }, {
     sequelize,
