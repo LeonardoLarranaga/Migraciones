@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       models.Activo.belongsTo(models.Ubicacion, {
         foreignKey: "ubicacionId",
       })
+
+      models.Activo.belongsToMany(models.Tag, {
+        through: models.ActivoTags
+      })
     }
   }
   Activo.init({
