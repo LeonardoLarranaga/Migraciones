@@ -2,6 +2,7 @@ const models = require("./models")
 
 async function consultar() {
     const activos = await models.Activo.findAll()
+    console.log(activos)
     console.log("\n\nActivos:\n\n")
     activos.forEach(activo => {
         console.log(activo.id, activo.numSerie, activo.numInventario, activo.descripcion)
