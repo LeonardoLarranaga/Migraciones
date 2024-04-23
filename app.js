@@ -8,6 +8,7 @@ app.use(cors())
 const port = 4000
 
 const activos = require("./rutas/activos.js")
+const responsables = require("./rutas/responsables.js")
 
 const credenciales = {
     key: fs.readFileSync("server.key"),
@@ -32,3 +33,4 @@ app.get("/", (_, respond) => {
 app.use(express.json())
 
 app.use("/activo", activos)
+app.use("/responsable", responsables)

@@ -1,4 +1,3 @@
-const { Json } = require("sequelize/lib/utils")
 const models = require("../models")
 
 // función para obtener todos los activos.
@@ -14,7 +13,6 @@ const getById = async function (request, response) {
             id: request.params.id
         }
     })
-
 
     if (activo) response.json(activo.dataValues)
     else response.status(404).send("Activo no encontrado.")
@@ -96,8 +94,6 @@ const postActivo = async function (request, response) {
 
             console.log(responsable)
             if (responsable) responsable.addActivo(activo)
-        } else {
-            console.log("NO RESPONSABLE")
         }
 
         if (request.body.ubicacionId) {
