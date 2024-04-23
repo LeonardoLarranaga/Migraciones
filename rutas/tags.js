@@ -6,8 +6,10 @@ const { combineTableNames } = require("sequelize/lib/utils")
 router.get("/", controller.getAll)
 router.get("/id/:id", controller.getById)
 router.get("/nombre/:nombre", controller.getByNombre)
+router.get("/:id/activos", controller.getActivos)
 
 router.post("/", controller.postTag)
+router.post("/:id/activo/:activoId", controller.postTagActivo)
 
 router.delete("/:id", controller.deleteTag)
 

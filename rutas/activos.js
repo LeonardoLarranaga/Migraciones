@@ -10,12 +10,15 @@ router.get("/numInventario/:numInventario", controller.getByNumInventario)
 router.get("/responsableId/:responsableId", controller.getByResponsableId)
 router.get("/tag/:tag", controller.getByTag)
 router.get("/ubicacionId/:ubicacionId", controller.getByUbicacionId)
+router.get("/:id/tags", controller.getTags)
 
 // rutas POST de los activos.
 router.post("/", controller.postActivo)
+router.post("/:id/tag/:tagId", controller.postActivoTag)
 
 // rutas DELETE de los activos.
 router.delete("/:id", controller.deleteActivo)
+router.delete("/:id/tag/:tagId", controller.deleteActivoTag)
 
 // rutas PUT de los activos.
 router.put("/:id", controller.updateActivo)

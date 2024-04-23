@@ -1,4 +1,6 @@
+const e = require("express")
 const models = require("../models")
+const { param } = require("../rutas/tags")
 
 // función para obtener todos los activos.
 const getAll = async function (_, response) {
@@ -81,9 +83,9 @@ const getByUbicacionId = async function (request, response) {
 const postActivo = async function (request, response) {
     try {
         const body = {...request.body}; delete body.responsableId; delete body.ubicacionId
-        const activo = await models.Activo.create(body)
+        const activo = await models.Activo.build(body)
 
-        await activo.save()
+        let mensajeError = ""
 
         if (request.body.responsableId) {
             const responsable = await models.Responsable.findOne({
@@ -92,8 +94,8 @@ const postActivo = async function (request, response) {
                 }
             })
 
-            console.log(responsable)
             if (responsable) responsable.addActivo(activo)
+            else mensajeError += `Responsable con Id ${request.body.responsableId} no existe. `
         }
 
         if (request.body.ubicacionId) {
@@ -104,9 +106,11 @@ const postActivo = async function (request, response) {
             })
 
             if (ubicacion) ubicacion.addActivo(activo)
+            else mensajeError += `Responsable con Id ${request.body.responsableId} no existe.`
         }
 
-        response.status(201).send("Activo creado.")
+        if (mensajeError.length == 0) response.status(201).send("Activo creado.")
+        else response.status(404).send(mensajeError)
     } catch (error) {
         response.status(400).send(`Activo no creado. ${error.message}`)
     }
@@ -144,9 +148,79 @@ const updateActivo = async function (request, response) {
     }
 }
 
+const getTags = async function (request, response) {
+    try {
+        const activo = await models.Activo.findOne({
+            where: {
+                id: request.params.id
+            }
+        })
+
+        if (activo) {
+            const tags = await activo.getTags()
+            response.status(200).send(tags);
+        } else response.status(404).send(`Activo con Id ${request.params.id} no existe.`)
+    } catch (error) {
+        response.status(500).send(`Error de Activos. ${error}`)
+    }
+}
+
+const postActivoTag = async function (request, response) {
+    try {
+        const activo = await models.Activo.findOne({
+            where: {
+                id: request.params.id
+            }
+        })
+
+        if (activo) {
+            const tag = await models.Tag.findOne({
+                where: {
+                    id: request.params.tagId
+                }
+            })
+
+            if (tag) {
+                await activo.addTag(tag)
+                response.status(200).send(`Activo ${activo.id} relacionado con Tag ${tag.id}.`)
+            } else response.status(404).send(`Tag con Id ${request.params.tagId} no existe.`)
+
+        } else response.status(404).send(`Activo con Id ${request.params.id} no existe.`)
+    } catch (error) {
+        response.status(500).send(`Error de Activos. ${error}`)
+    }
+}
+
+const deleteActivoTag = async function (request, response) {
+    try {
+        const activo = await models.Activo.findOne({
+            where: {
+                id: request.params.id
+            }
+        })
+
+        if (activo) {
+            const tag = await models.Tag.findOne({
+                where: {
+                    id: request.params.tagId
+                }
+            })
+
+            if (tag) {
+                await activo.removeTag(tag)
+                response.status(200).send(`Relación de Activo ${activo.id} con Tag ${tag.id} eliminada.`)
+            } else response.status(404).send(`Tag con Id ${request.params.tagId} no existe.`)
+
+        } else response.status(404).send(`Activo con Id ${request.params.id} no existe.`)
+    } catch (error) {
+        response.status(500).send(`Error de Activos. ${error}`)
+    }
+}
+
 module.exports = {
     getAll, getById, getByNumSerie, getByNumInventario, getByResponsableId, getByTag, getByUbicacionId,
     postActivo,
     deleteActivo,
-    updateActivo
+    updateActivo,
+    getTags, postActivoTag, deleteActivoTag
 }
