@@ -81,7 +81,6 @@ const updateResponsable = async function(request, response) {
     }
 }
 
-
 module.exports = {
     getAll, getById, getByNumeroEmpleado,
     postResponsable,
