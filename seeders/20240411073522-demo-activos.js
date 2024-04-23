@@ -15,6 +15,7 @@ module.exports = {
         numSerie: 2,
         numInventario: 2,
         descripcion: "Impresora láser compacta con velocidad de impresión de 30 ppm, resolución de 1200 dpi y capacidad de papel de 250 hojas. Conexión USB 3.0 para una fácil integración.",
+        responsableId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -22,6 +23,7 @@ module.exports = {
         numSerie: 3,
         numInventario: 3,
         descripcion: "Portátil ligera con procesador dual-core, 8 GB de RAM y SSD de 256 GB. Pantalla HD de 14 pulgadas y sistema operativo Windows 10 Home.",
+        responsableId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -29,6 +31,7 @@ module.exports = {
         numSerie: 4,
         numInventario: 4,
         descripcion: "Wearable con pantalla táctil a color, monitoreo de salud, seguimiento de actividad física, y resistencia al agua. Compatible con smartphones y diversas aplicaciones.",
+        responsableId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -36,6 +39,7 @@ module.exports = {
         numSerie: 5,
         numInventario: 5,
         descripcion: "Proyector de alta definición con resolución Full HD, 3000 lúmenes y tecnología LED para imágenes brillantes y nítidas. Conectividad versátil, incluyendo HDMI y USB, y altavoces integrados para una experiencia audiovisual completa.",
+        responsableId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },

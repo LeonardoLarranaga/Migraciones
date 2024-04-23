@@ -1,8 +1,8 @@
 const models = require("./models")
 
-models.Activo.sync({ force: false })
+/*models.Activo.sync({ force: false })
 models.Tag.sync({ force: false })
-models.ActivoTags.sync({ force: false})
+models.ActivoTags.sync({ force: false})*/
 
 async function activosTagsDemo(id, tags) {
     try {
@@ -50,4 +50,4 @@ async function activosTagsDemo(id, tags) {
 }
 
 // 33: "Chromebook resistente con procesador dual-core, 4 GB de RAM y almacenamiento eMMC de 32 GB. Pantalla HD de 11 pulgadas, teclado resistente a derrames y sistema operativo Chrome OS."
-activosTagsDemo(28, ["Laptop", "Computadora", "Chromebook"])
+activosTagsDemo(51, ["Laptop", "Computadora", "Chromebook"])
