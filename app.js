@@ -9,6 +9,7 @@ const port = 4000
 
 const activos = require("./rutas/activos.js")
 const responsables = require("./rutas/responsables.js")
+const ubicaciones = require("./rutas/ubicaciones.js")
 
 const credenciales = {
     key: fs.readFileSync("server.key"),
@@ -34,3 +35,4 @@ app.use(express.json())
 
 app.use("/activo", activos)
 app.use("/responsable", responsables)
+app.use("/ubicacion", ubicaciones)

@@ -16,7 +16,7 @@ const getById = async function(request, response) {
         })
     
         if (responsable) response.json(responsable.dataValues)
-        else response.status(404).send("Activo no encontrado.")
+        else response.status(404).send("Responsable no encontrado.")
     } catch (error) {
         response.status(500).send(`Error de Responsables. ${error}`)
     }
