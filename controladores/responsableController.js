@@ -32,7 +32,7 @@ const getByNumeroEmpleado = async function(request, response) {
         })
     
         if (responsable) response.json(responsable.dataValues)
-        else response.status(404).send("Activo no encontrado.")
+        else response.status(404).send("Responsable no encontrado.")
     } catch (error) {
         response.status(500).send(`Error de Responsables. ${error}`)
     }
@@ -42,8 +42,8 @@ const postResponsable = async function(request, response) {
     try {
         const responsable = await models.Responsable.create(request.body)
 
-        if (responsable) response.status(201).send("Activo creado.")
-        else response.status(400).send("Activo no creado.")
+        if (responsable) response.status(201).send("Responsable creado.")
+        else response.status(400).send("Responsable no creado.")
     } catch (error) {
         response.status(500).send(`Error de responsables. ${error}`)
     }
