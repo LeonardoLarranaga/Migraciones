@@ -15,6 +15,7 @@ router.post("/:id/activo/:activoId", controller.postTagActivo)
 
 // rutas DELETE de los tags.
 router.delete("/:id", controller.deleteTag)
+router.delete("/:id/activos", controller.removeAllActivoTags)
 
 // rutas PUT/PATCH de los tags.
 router.patch("/:id", controller.updateTag)

@@ -43,7 +43,7 @@ const postTag = async function(request, response) {
     try {
         const tag = await models.Tag.create(request.body)
 
-        if (tag) response.status(201).send("Tag creado.")
+        if (tag) response.status(201).send({mensaje:"Tag creado.", tag: tag})
         else response.status(400).send("Tag no creado.")
     } catch (error) {
         response.status(500).send(`Error de Tags. ${error}`)
@@ -53,13 +53,21 @@ const postTag = async function(request, response) {
 // función para eliminar un tag.
 const deleteTag = async function (request, response) {
     try {
-        const tag = await models.Tag.destroy({
+        const tag = await models.Tag.findOne({
             where: {
                 id: request.params.id
             }
         })
 
-        if (tag) response.status(200).send("Tag eliminado.")
+        if (tag) {
+            await models.ActivoTags.destroy({
+                where: {
+                    tagId: tag.id
+                }
+            })
+            await tag.destroy()
+            response.status(200).send("Tag eliminado.")
+        }
         else response.status(404).send(`Tag con Id ${request.params.id} no existe.`)
     } catch (error) {
         response.status(500).send(`Error de Tags. ${error}`)
@@ -77,7 +85,7 @@ const updateTag = async function(request, response) {
 
         if (tag) {
             await tag.update(request.body)
-            response.status(200).send('Tag actualizado.');
+            response.status(200).send({mensaje: 'Tag actualizado.', tag: tag});
         } else response.status(404).send(`Tag con Id ${request.params.id} no existe.`)
     } catch (error) {
         response.status(500).send(`Error de Tags. ${error}`)
@@ -129,10 +137,25 @@ const postTagActivo = async function (request, response) {
     }
 }
 
+// función para remover todos los activos-tags.
+const removeAllActivoTags = async function (request, response) {
+    try {
+       await models.ActivoTags.destroy({
+            where: {
+                tagId: request.params.id
+            }
+        })
+
+        response.status(200).send(`Activos de Tag ${request.params.id} eliminados.`)
+    } catch (error) {
+        response.status(500).send(`Error de Tags. ${error}`)
+    }
+}
+
 module.exports = {
     getAll, getById, getByNombre,
     postTag,
-    deleteTag,
+    deleteTag, removeAllActivoTags,
     updateTag,
     getActivos, postTagActivo
 }
