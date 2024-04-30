@@ -1,10 +1,12 @@
 const models = require("../models")
 
+// función para obtener todos los tags.
 const getAll = async function(_, response) {
     const tags = await models.Tag.findAll()
     response.send(tags)
 }
 
+// función para obtener un tag por su Id.
 const getById = async function(request, response) {
     try {
         const tag = await models.Tag.findOne({
@@ -20,6 +22,7 @@ const getById = async function(request, response) {
     }
 }
 
+// función par aobtener un tag por su nombre.
 const getByNombre = async function(request, response) {
     try {
         const tag = await models.Tag.findOne({
@@ -35,6 +38,7 @@ const getByNombre = async function(request, response) {
     }
 }
 
+// función para crear un nuevo tag.
 const postTag = async function(request, response) {
     try {
         const tag = await models.Tag.create(request.body)
@@ -46,6 +50,7 @@ const postTag = async function(request, response) {
     }
 }
 
+// función para eliminar un tag.
 const deleteTag = async function (request, response) {
     try {
         const tag = await models.Tag.destroy({
@@ -61,6 +66,7 @@ const deleteTag = async function (request, response) {
     }
 }
 
+// función para actualizar un tag.
 const updateTag = async function(request, response) {
     try {
         const tag = await models.Tag.findOne({
@@ -78,6 +84,7 @@ const updateTag = async function(request, response) {
     }
 }
 
+// función para obtener los activos de un tag.
 const getActivos = async function(request, response) {
     try {
         const tag = await models.Tag.findOne({
@@ -95,6 +102,7 @@ const getActivos = async function(request, response) {
     }
 }
 
+// función para crear una relación activo-tag
 const postTagActivo = async function (request, response) {
     try {
         const tag = await models.Tag.findOne({

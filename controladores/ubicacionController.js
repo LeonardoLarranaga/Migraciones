@@ -6,6 +6,7 @@ const getAll = async function (_, response) {
     response.send(ubicaciones)
 }
 
+// función para obtener una ubicación por su Id.
 const getById = async function (request, response) {
     try {
         const ubicacion = await models.Ubicacion.findOne({
@@ -21,6 +22,7 @@ const getById = async function (request, response) {
     }
 }
 
+// función para crear una ubicación.
 const postUbicacion = async function (request, response) {
     try {
         const ubicacion = await models.Ubicacion.create(request.body)
@@ -32,6 +34,7 @@ const postUbicacion = async function (request, response) {
     }
 }
 
+// función para elimianr una ubicación.
 const deleteUbicacion = async function (request, response) {
     try {
         const ubicacion = await models.Ubicacion.findOne({
@@ -55,6 +58,7 @@ const deleteUbicacion = async function (request, response) {
     }
 }
 
+// función para actualizar una ubicación.
 const updateUbicacion = async function (request, response) {
     try {
         const ubicacion = await models.Ubicacion.findOne({
@@ -72,6 +76,7 @@ const updateUbicacion = async function (request, response) {
     }
 }
 
+// función para remover los activos de una ubicación.
 const removeAllActivos = async function (request, response) {
     try {
         const ubicacion = await models.Ubicacion.findOne({
@@ -94,6 +99,7 @@ const removeAllActivos = async function (request, response) {
     }
 }
 
+// función para añadir un activo a una ubicación.
 const addActivo = async function(request, response) {
     try {
         const ubicacion = await models.Ubicacion.findOne({
@@ -120,6 +126,7 @@ const addActivo = async function(request, response) {
     } 
 }
 
+// función para obtener todos los activos de un tag.
 const getAllActivos = async function(request, response) {
     try {
         const ubicacion = await models.Ubicacion.findOne({

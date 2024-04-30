@@ -1,10 +1,12 @@
 const models = require("../models")
 
+// función para obtener todos los usuarios.
 const getAll = async function(_, response) {
     const usuarios = await models.Usuario.findAll()
     response.send(usuarios)
 }
 
+// función para obtener un usuario por su Id.
 const getById = async function(request, response) {
     try {
         const usuario = await models.Usuario.findOne({
@@ -20,6 +22,7 @@ const getById = async function(request, response) {
     }
 }
 
+// función para obtener un usuario por su login.
 const getByLogin = async function(request, response) {
     try {
         const usuario = await models.Usuario.findOne({
@@ -35,6 +38,7 @@ const getByLogin = async function(request, response) {
     }
 }
 
+// función para crear un usuario.
 const postUsuario = async function(request, response) {
     try {
         const usuario = await models.Usuario.create(request.body)
@@ -46,6 +50,7 @@ const postUsuario = async function(request, response) {
     }
 }
 
+// función para eliminar un usuario.
 const deleteUsuario = async function (request, response) {
     try {
         const usuario = await models.Usuario.destroy({
@@ -61,6 +66,7 @@ const deleteUsuario = async function (request, response) {
     }
 }
 
+// función para actualizar un usuario.
 const updateUsuario = async function(request, response) {
     try {
         const usuario = await models.Usuario.findOne({

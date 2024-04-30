@@ -42,6 +42,7 @@ const getByNumInventario = async function (request, response) {
     else response.status(404).send("Activo no encontrado.")
 }
 
+// función para obtener todos los activos de un responsable.
 const getByResponsableId = async function (request, response) {
     const activos = await models.Activo.findAll({
         where: {
@@ -53,31 +54,7 @@ const getByResponsableId = async function (request, response) {
     else response.status(404).send("Activos no encontrados.")
 }
 
-const getByTag = async function (request, response) {
-    const tag = await models.Tag.findOne({
-        where: {
-            nombre: request.params.tag
-        }
-    })
-
-    if (tag) {
-        const activos = await tag.getActivos()
-
-        if (activos) response.send(activos)
-        else response.status(404).send(`Tag ${tag.nombre} no tiene activos.`)
-
-    } else response.status(404).send("Tag no encontrado.")
-}
-
-const getByUbicacionId = async function (request, response) {
-    const activos = await models.Activo.where({
-        ubicacionId: request.params.ubicacionId
-    })
-
-    if (activos) response.send(activos)
-    else response.status(404).send("Activos no encontrados.")
-}
-
+// función para crear un nuevo activo.
 const postActivo = async function (request, response) {
     try {
         const activo = await models.Activo.create(request.body)
@@ -88,27 +65,24 @@ const postActivo = async function (request, response) {
     }
 }
 
+// función para elimimar un activo.
 const deleteActivo = async function (request, response) {
     try {
-        const activoSafe = await models.Activo.findOne({
-            where: {
-                id: request.params.id
-            }
-        })
-
-        const activo = await models.Activo.destroy({
+        const activo = await models.Activo.findOne({
             where: {
                 id: request.params.id
             }
         })
         
         if (activo) {
+            // eliminar las relaciones Activo-Tags.
             models.ActivoTags.destroy({
                 where: {
-                    activoId: activoSafe.id
+                    activoId: activo.id
                 }
             })
 
+            await activo.destroy()
             response.status(200).send("Activo eliminado.")
         }
         else response.status(404).send(`Activo con Id ${request.params.id} no existe.`)
@@ -117,6 +91,7 @@ const deleteActivo = async function (request, response) {
     }
 }
 
+// función para actualizar un activo.
 const updateActivo = async function (request, response) {
     try {
         const activo = await models.Activo.findOne({
@@ -134,6 +109,7 @@ const updateActivo = async function (request, response) {
     }
 }
 
+// función para obtener los tags de un activo.
 const getTags = async function (request, response) {
     try {
         const activo = await models.Activo.findOne({
@@ -151,6 +127,7 @@ const getTags = async function (request, response) {
     }
 }
 
+// función para relacionar un tag con un activo.
 const postActivoTag = async function (request, response) {
     try {
         const activo = await models.Activo.findOne({
@@ -177,6 +154,7 @@ const postActivoTag = async function (request, response) {
     }
 }
 
+// función para eliminar la relación entre un activo y un tag.
 const deleteActivoTag = async function (request, response) {
     try {
         const activo = await models.Activo.findOne({
@@ -203,6 +181,7 @@ const deleteActivoTag = async function (request, response) {
     }
 }
 
+// función para eliminar todos los tags de un activo. útil cuando se va a borrar o cambiar los tags.
 const deleteAllActivoTags = async function (request, response) {
     try {
         const activo = await models.Activo.findOne({
@@ -226,7 +205,7 @@ const deleteAllActivoTags = async function (request, response) {
 }
  
 module.exports = {
-    getAll, getById, getByNumSerie, getByNumInventario, getByResponsableId, getByTag, getByUbicacionId,
+    getAll, getById, getByNumSerie, getByNumInventario, getByResponsableId,
     postActivo,
     deleteActivo, deleteAllActivoTags,
     updateActivo,

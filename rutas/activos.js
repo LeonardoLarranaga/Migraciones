@@ -8,8 +8,6 @@ router.get("/id/:id", controller.getById)
 router.get("/numSerie/:numSerie", controller.getByNumSerie)
 router.get("/numInventario/:numInventario", controller.getByNumInventario)
 router.get("/responsableId/:responsableId", controller.getByResponsableId)
-router.get("/tag/:tag", controller.getByTag)
-router.get("/ubicacionId/:ubicacionId", controller.getByUbicacionId)
 router.get("/:id/tags", controller.getTags)
 
 // rutas POST de los activos.
