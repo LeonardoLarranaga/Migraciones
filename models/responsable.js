@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     imagen: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BLOB('long'),
     }
   }, {
     sequelize,

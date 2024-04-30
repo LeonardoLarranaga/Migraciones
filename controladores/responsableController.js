@@ -41,8 +41,7 @@ const getByNumeroEmpleado = async function(request, response) {
 const postResponsable = async function(request, response) {
     try {
         const responsable = await models.Responsable.create(request.body)
-
-        if (responsable) response.status(201).send("Responsable creado.")
+        if (responsable) response.status(201).send({mensaje: "Responsable creado.", responsable: responsable})
         else response.status(400).send("Responsable no creado.")
     } catch (error) {
         response.status(500).send(`Error de responsables. ${error}`)
@@ -51,13 +50,21 @@ const postResponsable = async function(request, response) {
 
 const deleteResponsable = async function (request, response) {
     try {
-        const responsable = await models.Responsable.destroy({
+        const responsable = await models.Responsable.findOne({
             where: {
                 id: request.params.id
             }
         })
 
-        if (responsable) response.status(200).send("Responsable eliminado.")
+        if (responsable) {
+            await models.Activo.update({ responsableId: null }, { 
+                where: { 
+                    responsableId: responsable.id 
+                } });
+                
+            await responsable.destroy()
+            response.status(200).send("Responsable eliminado.")
+        }
         else response.status(404).send(`Responsable con Id ${request.params.id} no existe.`)
     } catch (error) {
         response.status(500).send(`Error de responsables. ${error}`)
@@ -74,16 +81,106 @@ const updateResponsable = async function(request, response) {
 
         if (responsable) {
             await responsable.update(request.body)
-            response.status(200).send('Responsable actualizado.');
+            response.status(200).send({mensaje: 'Responsable actualizado.', responsable: responsable});
         } else response.status(404).send(`Responsable con Id ${request.params.id} no existe.`)
     } catch (error) {
         response.status(500).send(`Error de responsables. ${error}`)
     }
 }
 
+const getAllActivos = async function(request, response) {
+    try {
+        const responsable = await models.Responsable.findOne({
+            where: {
+                id: request.params.id
+            }
+        })
+    
+        if (responsable) {
+            const activos = await responsable.getActivos()
+            response.status(200).send(activos)
+        } else response.status(404).send(`Responsable con Id ${request.params.id} no existe.`)
+    } catch (error) {
+        response.status(500).send(`Error de Responsables. ${error}`)
+    }
+}
+
+const removeActivo = async function(request, response) {
+    try {
+        const responsable = await models.Responsable.findOne({
+            where: {
+                id: request.params.id
+            }
+        })
+    
+        if (responsable) {
+            const activo = await models.Activo.findOne({
+                where: {
+                    id: request.params.activoId
+                }
+            })
+
+            if (activo) {
+                activo.responsableId = null
+                activo.save()
+                response.status(200).send(`Activo ${activo.id} quitado de Responsable ${responsable.id}.`)
+            } else response.status(404).send(`Activo con Id ${request.params.activoId} no existe.`)
+        } else response.status(404).send(`Responsable con Id ${request.params.id} no existe.`)
+    } catch (error) {
+        response.status(500).send(`Error de Responsables. ${error}`)
+    } 
+}
+
+const removeAllActivos = async function(request, response) {
+try {
+        const responsable = await models.Responsable.findOne({
+            where: {
+                id: request.params.id
+            }
+        })
+    
+        if (responsable) {
+            await models.Activo.update({ responsableId: null }, { 
+                where: { 
+                    responsableId: responsable.id 
+                } });
+
+            response.status(200).send(`Activos de Responsable ${responsable.id} desvinculados.`)
+        } else response.status(404).send(`Responsable con Id ${request.params.id} no existe.`)
+    } catch (error) {
+        response.status(500).send(`Error de Responsables. ${error}`)
+    } 
+}
+
+const addActivo = async function(request, response) {
+    try {
+        const responsable = await models.Responsable.findOne({
+            where: {
+                id: request.params.id
+            }
+        })
+    
+        if (responsable) {
+            const activo = await models.Activo.findOne({
+                where: {
+                    id: request.params.activoId
+                }
+            })
+
+            if (activo) {
+                activo.responsableId = responsable.id
+                activo.save()
+                response.status(200).send(`Activo ${activo.id} conectado a Responsable ${responsable.id}.`)
+            } else response.status(404).send(`Activo con Id ${request.params.activoId} no existe.`)
+        } else response.status(404).send(`Responsable con Id ${request.params.id} no existe.`)
+    } catch (error) {
+        response.status(500).send(`Error de Responsables. ${error}`)
+    } 
+}
+
 module.exports = {
-    getAll, getById, getByNumeroEmpleado,
+    getAll, getById, getByNumeroEmpleado, getAllActivos,
     postResponsable,
-    deleteResponsable,
-    updateResponsable
+    deleteResponsable, removeActivo, removeAllActivos,
+    updateResponsable, addActivo
 }
