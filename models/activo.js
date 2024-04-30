@@ -7,14 +7,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       models.Activo.belongsTo(models.Ubicacion, {
         foreignKey: "ubicacionId",
+        onDelete: "SET NULL"
       })
 
       models.Activo.belongsTo(models.Responsable, {
-        foreignKey: "responsableId"
+        foreignKey: "responsableId",
+        onDelete: "SET NULL"
       })
 
       models.Activo.belongsToMany(models.Tag, {
-        through: models.ActivoTags
+        through: models.ActivoTags,
+        onDelete: "CASCADE"
       })
     }
   }
@@ -33,7 +36,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     imagen: {
-      type: DataTypes.BLOB,
+      type: DataTypes.BLOB('long'),
+      allowNull: true
     },
     ubicacionId: {
       type: DataTypes.INTEGER,

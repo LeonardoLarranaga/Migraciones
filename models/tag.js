@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   class Tag extends Model {
     static associate(models) {
       models.Tag.belongsToMany(models.Activo, {
-        through: models.ActivoTags
+        through: models.ActivoTags,
+        onDelete: "CASCADE"
       })
     }
   }

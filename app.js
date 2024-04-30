@@ -4,7 +4,10 @@ const fs = require("fs")
 const cors = require("cors")
 
 const app = express()
+
 app.use(cors())
+app.use(require("body-parser").json({ limit: "100000gb"} ))
+
 const port = 4000
 
 const activos = require("./rutas/activos.js")
