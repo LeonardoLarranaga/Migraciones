@@ -4,18 +4,17 @@ const controller = require("../controladores/usuarioController.js")
 
 // rutas GET de los usuarios.
 router.get("/", controller.getAll)
-router.get("/id/:id", controller.getById)
-router.get("/login/:login", controller.getByLogin)
+router.get("/email/:email", controller.getByEmail)
+router.get("/token/:token", controller.getByToken)
 
 // rutas POST de los usuarios.
 router.post("/", controller.postUsuario)
 
 // rutas DELETE de los usuarios.
-router.delete("/:id", controller.deleteUsuario)
+router.delete("/:token", controller.deleteUsuario)
 
 // rutas PATCH/PUT de los usuarios.
-router.patch("/:id", controller.updateUsuario)
-router.put("/:id", controller.updateUsuario)
+router.patch("/:token/:permisos/:pass", controller.updateUsuarioPermisos)
 
 
 module.exports = router

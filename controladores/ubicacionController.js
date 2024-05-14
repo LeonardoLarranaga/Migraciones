@@ -1,13 +1,17 @@
 const models = require("../models")
 
 // función para obtener todos las ubicaciones.
-const getAll = async function (_, response) {
+const getAll = async function (request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+
     const ubicaciones = await models.Ubicacion.findAll()
     response.send(ubicaciones)
 }
 
 // función para obtener una ubicación por su Id.
 const getById = async function (request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const ubicacion = await models.Ubicacion.findOne({
             where: {
@@ -24,6 +28,8 @@ const getById = async function (request, response) {
 
 // función para crear una ubicación.
 const postUbicacion = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const ubicacion = await models.Ubicacion.create(request.body)
 
@@ -36,6 +42,8 @@ const postUbicacion = async function (request, response) {
 
 // función para elimianr una ubicación.
 const deleteUbicacion = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const ubicacion = await models.Ubicacion.findOne({
             where: {
@@ -60,6 +68,8 @@ const deleteUbicacion = async function (request, response) {
 
 // función para actualizar una ubicación.
 const updateUbicacion = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const ubicacion = await models.Ubicacion.findOne({
             where: {
@@ -78,6 +88,8 @@ const updateUbicacion = async function (request, response) {
 
 // función para remover los activos de una ubicación.
 const removeAllActivos = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const ubicacion = await models.Ubicacion.findOne({
             where: {
@@ -101,6 +113,8 @@ const removeAllActivos = async function (request, response) {
 
 // función para añadir un activo a una ubicación.
 const addActivo = async function(request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const ubicacion = await models.Ubicacion.findOne({
             where: {
@@ -128,6 +142,8 @@ const addActivo = async function(request, response) {
 
 // función para obtener todos los activos de un tag.
 const getAllActivos = async function(request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const ubicacion = await models.Ubicacion.findOne({
             where: {

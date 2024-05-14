@@ -6,12 +6,12 @@ const getAll = async function(_, response) {
     response.send(usuarios)
 }
 
-// función para obtener un usuario por su Id.
-const getById = async function(request, response) {
+// función para obtener un usuario por su login.
+const getByEmail = async function(request, response) {
     try {
         const usuario = await models.Usuario.findOne({
             where: {
-                id: request.params.id
+                email: request.params.email
             }
         })
     
@@ -22,15 +22,14 @@ const getById = async function(request, response) {
     }
 }
 
-// función para obtener un usuario por su login.
-const getByLogin = async function(request, response) {
+const getByToken = async function(request, response) {
     try {
         const usuario = await models.Usuario.findOne({
             where: {
-                login: request.params.login
+                token: request.params.token
             }
         })
-    
+
         if (usuario) response.json(usuario.dataValues)
         else response.status(404).send("Usuario no encontrado.")
     } catch (error) {
@@ -43,7 +42,7 @@ const postUsuario = async function(request, response) {
     try {
         const usuario = await models.Usuario.create(request.body)
 
-        if (usuario) response.status(201).send("Usuario creado.")
+        if (usuario) response.status(201).send({mensaje: "Usuario creado.", usuario: usuario})
         else response.status(400).send("Usuario no creado.")
     } catch (error) {
         response.status(500).send(`Error de Usuarios. ${error}`)
@@ -55,7 +54,7 @@ const deleteUsuario = async function (request, response) {
     try {
         const usuario = await models.Usuario.destroy({
             where: {
-                id: request.params.id
+                token: request.params.token
             }
         })
 
@@ -66,27 +65,34 @@ const deleteUsuario = async function (request, response) {
     }
 }
 
-// función para actualizar un usuario.
-const updateUsuario = async function(request, response) {
+// función para actualizar lso permisos de un usuario.
+const updateUsuarioPermisos = async function(request, response) {
     try {
+        if (request.params.pass != "backend") {
+            response.status(403).send("Error de Usuarios. Contraseña incorrecta.")
+            return
+        }
+
         const usuario = await models.Usuario.findOne({
             where: {
-                id: request.params.id
+                token: request.params.token
             }
         })
-
+        
         if (usuario) {
-            await usuario.update(request.body)
-            response.status(200).send('Usuario actualizado.');
-        } else response.status(404).send(`Usuario con Id ${request.params.id} no existe.`)
+            usuario.permisos = request.params.permisos
+            await usuario.update({ permisos: request.params.permisos })
+            await usuario.save()
+            response.status(200).send(usuario.dataValues)
+        } else response.status(404).send("Usuario no encontrado.")
     } catch (error) {
         response.status(500).send(`Error de Usuarios. ${error}`)
     }
 }
 
 module.exports = {
-    getAll, getById, getByLogin, 
+    getAll, getByEmail, getByToken,
     postUsuario,
     deleteUsuario,
-    updateUsuario
+    updateUsuarioPermisos
 }

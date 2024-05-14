@@ -1,13 +1,15 @@
 const models = require("../models")
 
 // función para obtener todos los activos.
-const getAll = async function (_, response) {
+const getAll = async function (request, response) {  
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
     const activos = await models.Activo.findAll()
     response.send(activos)
 }
 
 // función para obtener un activo mediante su Id.
 const getById = async function (request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
     const activo = await models.Activo.findOne({
         where: {
             id: request.params.id
@@ -20,6 +22,7 @@ const getById = async function (request, response) {
 
 // función para obtener un activo mediante su serie.
 const getByNumSerie = async function (request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
     const activo = await models.Activo.findOne({
         where: {
             numSerie: request.params.numSerie
@@ -32,6 +35,7 @@ const getByNumSerie = async function (request, response) {
 
 // función para obtener una activo mediante su número de inventario.
 const getByNumInventario = async function (request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
     const activo = await models.Activo.findOne({
         where: {
             numInventario: request.params.numInventario
@@ -44,6 +48,7 @@ const getByNumInventario = async function (request, response) {
 
 // función para obtener todos los activos de un responsable.
 const getByResponsableId = async function (request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
     const activos = await models.Activo.findAll({
         where: {
             responsableId: request.params.responsableId
@@ -56,6 +61,7 @@ const getByResponsableId = async function (request, response) {
 
 // función para crear un nuevo activo.
 const postActivo = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
     try {
         const activo = await models.Activo.create(request.body)
         if (activo) response.status(201).send({mensaje: "Activo creado.", activo: activo})
@@ -67,6 +73,7 @@ const postActivo = async function (request, response) {
 
 // función para elimimar un activo.
 const deleteActivo = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
     try {
         const activo = await models.Activo.findOne({
             where: {
@@ -93,6 +100,7 @@ const deleteActivo = async function (request, response) {
 
 // función para actualizar un activo.
 const updateActivo = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
     try {
         const activo = await models.Activo.findOne({
             where: {
@@ -111,6 +119,7 @@ const updateActivo = async function (request, response) {
 
 // función para obtener los tags de un activo.
 const getTags = async function (request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
     try {
         const activo = await models.Activo.findOne({
             where: {
@@ -129,6 +138,7 @@ const getTags = async function (request, response) {
 
 // función para relacionar un tag con un activo.
 const postActivoTag = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
     try {
         const activo = await models.Activo.findOne({
             where: {
@@ -156,6 +166,7 @@ const postActivoTag = async function (request, response) {
 
 // función para eliminar la relación entre un activo y un tag.
 const deleteActivoTag = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
     try {
         const activo = await models.Activo.findOne({
             where: {
@@ -183,6 +194,7 @@ const deleteActivoTag = async function (request, response) {
 
 // función para eliminar todos los tags de un activo. útil cuando se va a borrar o cambiar los tags.
 const deleteAllActivoTags = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
     try {
         const activo = await models.Activo.findOne({
             where: {

@@ -2,11 +2,13 @@ const express = require("express")
 const https = require("https")
 const fs = require("fs")
 const cors = require("cors")
+const passport = require('passport')
 
 const app = express()
 
 app.use(cors())
 app.use(require("body-parser").json({ limit: "100000gb"} ))
+app.use(passport.initialize())
 
 const port = 4000
 
@@ -15,6 +17,7 @@ const responsables = require("./rutas/responsables.js")
 const ubicaciones = require("./rutas/ubicaciones.js")
 const usuarios = require("./rutas/usuarios.js")
 const tags = require("./rutas/tags.js")
+const passportRutas = require('./rutas/passport.js')
 
 const credenciales = {
     key: fs.readFileSync("server.key"),
@@ -43,3 +46,4 @@ app.use("/responsable", responsables)
 app.use("/ubicacion", ubicaciones)
 app.use("/usuario", usuarios)
 app.use("/tag", tags)
+app.use('/passport', passportRutas)

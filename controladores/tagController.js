@@ -1,13 +1,17 @@
 const models = require("../models")
 
 // función para obtener todos los tags.
-const getAll = async function(_, response) {
+const getAll = async function(request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+
     const tags = await models.Tag.findAll()
     response.send(tags)
 }
 
 // función para obtener un tag por su Id.
 const getById = async function(request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const tag = await models.Tag.findOne({
             where: {
@@ -24,6 +28,8 @@ const getById = async function(request, response) {
 
 // función par aobtener un tag por su nombre.
 const getByNombre = async function(request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const tag = await models.Tag.findOne({
             where: {
@@ -40,6 +46,8 @@ const getByNombre = async function(request, response) {
 
 // función para crear un nuevo tag.
 const postTag = async function(request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const tag = await models.Tag.create(request.body)
 
@@ -52,6 +60,8 @@ const postTag = async function(request, response) {
 
 // función para eliminar un tag.
 const deleteTag = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const tag = await models.Tag.findOne({
             where: {
@@ -76,6 +86,8 @@ const deleteTag = async function (request, response) {
 
 // función para actualizar un tag.
 const updateTag = async function(request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const tag = await models.Tag.findOne({
             where: {
@@ -94,6 +106,8 @@ const updateTag = async function(request, response) {
 
 // función para obtener los activos de un tag.
 const getActivos = async function(request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const tag = await models.Tag.findOne({
             where: {
@@ -112,6 +126,8 @@ const getActivos = async function(request, response) {
 
 // función para crear una relación activo-tag
 const postTagActivo = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const tag = await models.Tag.findOne({
             where: {
@@ -139,6 +155,8 @@ const postTagActivo = async function (request, response) {
 
 // función para remover todos los activos-tags.
 const removeAllActivoTags = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
        await models.ActivoTags.destroy({
             where: {

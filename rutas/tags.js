@@ -1,24 +1,24 @@
 const express = require("express")
 const router = express.Router()
 const controller = require("../controladores/tagController.js")
-const { combineTableNames } = require("sequelize/lib/utils")
+const passport = require("../controladores/passportController.js")
 
 // rutas GET de los tags.
-router.get("/", controller.getAll)
-router.get("/id/:id", controller.getById)
-router.get("/nombre/:nombre", controller.getByNombre)
-router.get("/:id/activos", controller.getActivos)
+router.get("/", passport.authenticate('jwt', { session: false }), controller.getAll)
+router.get("/id/:id", passport.authenticate('jwt', { session: false }), controller.getById)
+router.get("/nombre/:nombre", passport.authenticate('jwt', { session: false }), controller.getByNombre)
+router.get("/:id/activos", passport.authenticate('jwt', { session: false }), controller.getActivos)
 
 // rutas POST de los tags.
-router.post("/", controller.postTag)
-router.post("/:id/activo/:activoId", controller.postTagActivo)
+router.post("/", passport.authenticate('jwt', { session: false }), controller.postTag)
+router.post("/:id/activo/:activoId", passport.authenticate('jwt', { session: false }), controller.postTagActivo)
 
 // rutas DELETE de los tags.
-router.delete("/:id", controller.deleteTag)
-router.delete("/:id/activos", controller.removeAllActivoTags)
+router.delete("/:id", passport.authenticate('jwt', { session: false }), controller.deleteTag)
+router.delete("/:id/activos", passport.authenticate('jwt', { session: false }), controller.removeAllActivoTags)
 
 // rutas PUT/PATCH de los tags.
-router.patch("/:id", controller.updateTag)
-router.put("/:id", controller.updateTag)
+router.patch("/:id", passport.authenticate('jwt', { session: false }), controller.updateTag)
+router.put("/:id", passport.authenticate('jwt', { session: false }), controller.updateTag)
 
 module.exports = router

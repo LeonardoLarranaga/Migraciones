@@ -1,13 +1,16 @@
 const models = require("../models")
 
 // función para obtener todos los responsables.
-const getAll = async function (_, response) {
-    const responsables = await models.Responsable.findAll()
+const getAll = async function (request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+        const responsables = await models.Responsable.findAll()
     response.send(responsables)
 }
 
 // función para obtener un responsable mediante su Id.
 const getById = async function (request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const responsable = await models.Responsable.findOne({
             where: {
@@ -24,6 +27,8 @@ const getById = async function (request, response) {
 
 // función para obtener un responsable mediante su número de empleado.
 const getByNumeroEmpleado = async function (request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const responsable = await models.Responsable.findOne({
             where: {
@@ -40,6 +45,8 @@ const getByNumeroEmpleado = async function (request, response) {
 
 // función para crear un responsable.
 const postResponsable = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const responsable = await models.Responsable.create(request.body)
         if (responsable) response.status(201).send({ mensaje: "Responsable creado.", responsable: responsable })
@@ -51,6 +58,8 @@ const postResponsable = async function (request, response) {
 
 // función para eliminar un responsable.
 const deleteResponsable = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const responsable = await models.Responsable.findOne({
             where: {
@@ -77,6 +86,8 @@ const deleteResponsable = async function (request, response) {
 
 // función para actualizar un responsable.
 const updateResponsable = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const responsable = await models.Responsable.findOne({
             where: {
@@ -95,6 +106,8 @@ const updateResponsable = async function (request, response) {
 
 // función para obtener los activos de un responsable.
 const getAllActivos = async function (request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const responsable = await models.Responsable.findOne({
             where: {
@@ -113,6 +126,8 @@ const getAllActivos = async function (request, response) {
 
 // función para remover un activo de un responsable.
 const removeActivo = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const responsable = await models.Responsable.findOne({
             where: {
@@ -140,6 +155,8 @@ const removeActivo = async function (request, response) {
 
 // función para eliminar todos los activos de un responsable. útil cuando se va a eliminar o se quieren cambiar los activos de un responsable.
 const removeAllActivos = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const responsable = await models.Responsable.findOne({
             where: {
@@ -163,6 +180,8 @@ const removeAllActivos = async function (request, response) {
 
 // función para añadirle un activo a un responsable.
 const addActivo = async function (request, response) {
+    if (!request.user.permisos.includes("w")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const responsable = await models.Responsable.findOne({
             where: {

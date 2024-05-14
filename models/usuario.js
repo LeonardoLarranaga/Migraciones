@@ -14,17 +14,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Usuario.init({
-    login: {
+    token: {
+      type: DataTypes.TEXT('long'),
+      primaryKey: true,
+      allowNull: false,
+    },
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
+      unique: true
     },
     permisos: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(2),
       allowNull: false
     }
   }, {
