@@ -4,7 +4,7 @@
   "description": "Migraciones",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon --no-deprecation app.js"
   },
   "keywords": [],
   "author": "Leonardo Larrañaga",
@@ -12,7 +12,9 @@
   "dependencies": {
     "axios": "^1.6.8",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "google-auth-library": "^9.10.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.4",
     "nodemon": "^3.1.0",

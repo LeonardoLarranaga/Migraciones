@@ -1,4 +1,6 @@
 const models = require("../models")
+const dotenv = require('dotenv')
+dotenv.config('.env')
 
 // función para obtener todos los usuarios.
 const getAll = async function(_, response) {
@@ -6,44 +8,19 @@ const getAll = async function(_, response) {
     response.send(usuarios)
 }
 
-// función para obtener un usuario por su login.
-const getByEmail = async function(request, response) {
+// función para obtener un usuario por su email.
+const getOne = async function(request, response) {
+    if (!request.user.permisos.includes("r")) return response.status(403).send("Usuario no autorizado.")
+
     try {
         const usuario = await models.Usuario.findOne({
             where: {
-                email: request.params.email
+                email: request.user.email
             }
         })
     
         if (usuario) response.json(usuario.dataValues)
         else response.status(404).send("Usuario no encontrado.")
-    } catch (error) {
-        response.status(500).send(`Error de Usuarios. ${error}`)
-    }
-}
-
-const getByToken = async function(request, response) {
-    try {
-        const usuario = await models.Usuario.findOne({
-            where: {
-                token: request.params.token
-            }
-        })
-
-        if (usuario) response.json(usuario.dataValues)
-        else response.status(404).send("Usuario no encontrado.")
-    } catch (error) {
-        response.status(500).send(`Error de Usuarios. ${error}`)
-    }
-}
-
-// función para crear un usuario.
-const postUsuario = async function(request, response) {
-    try {
-        const usuario = await models.Usuario.create(request.body)
-
-        if (usuario) response.status(201).send({mensaje: "Usuario creado.", usuario: usuario})
-        else response.status(400).send("Usuario no creado.")
     } catch (error) {
         response.status(500).send(`Error de Usuarios. ${error}`)
     }
@@ -65,17 +42,15 @@ const deleteUsuario = async function (request, response) {
     }
 }
 
-// función para actualizar lso permisos de un usuario.
+// función para actualizar los permisos de un usuario.
 const updateUsuarioPermisos = async function(request, response) {
     try {
-        if (request.params.pass != "backend") {
-            response.status(403).send("Error de Usuarios. Contraseña incorrecta.")
-            return
-        }
+        if (request.params.pass != process.env.VITE_CHANGE_PERMISSIONS_SECRET) 
+            return response.status(403).send("Error de Usuarios. Contraseña incorrecta.")
 
         const usuario = await models.Usuario.findOne({
             where: {
-                token: request.params.token
+                email: request.user.email
             }
         })
         
@@ -91,8 +66,7 @@ const updateUsuarioPermisos = async function(request, response) {
 }
 
 module.exports = {
-    getAll, getByEmail, getByToken,
-    postUsuario,
+    getAll, getOne,
     deleteUsuario,
     updateUsuarioPermisos
 }

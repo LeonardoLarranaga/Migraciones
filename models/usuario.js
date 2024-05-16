@@ -14,15 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Usuario.init({
-    token: {
-      type: DataTypes.TEXT('long'),
-      primaryKey: true,
-      allowNull: false,
-    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      primaryKey: true
     },
     permisos: {
       type: DataTypes.STRING(2),

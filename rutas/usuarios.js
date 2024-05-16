@@ -1,20 +1,16 @@
 const express = require("express")
 const router = express.Router()
 const controller = require("../controladores/usuarioController.js")
+const passport = require("../controladores/passportController.js")
 
 // rutas GET de los usuarios.
-router.get("/", controller.getAll)
-router.get("/email/:email", controller.getByEmail)
-router.get("/token/:token", controller.getByToken)
-
-// rutas POST de los usuarios.
-router.post("/", controller.postUsuario)
+//router.get("/", controller.getAll)
+router.get("/", passport.authenticate('jwt', { session: false }), controller.getOne)
 
 // rutas DELETE de los usuarios.
 router.delete("/:token", controller.deleteUsuario)
 
 // rutas PATCH/PUT de los usuarios.
-router.patch("/:token/:permisos/:pass", controller.updateUsuarioPermisos)
-
+router.patch("/:permisos/:pass", passport.authenticate('jwt', { session: false }), controller.updateUsuarioPermisos)
 
 module.exports = router
